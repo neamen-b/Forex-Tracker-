@@ -1,6 +1,9 @@
-import selenium 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+# imports a tool that allows for the driver to wait for an expected values
+from selenium.webdriver.support.ui import WebDriverWait
+# has difference expected values parameters
+from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
 import time
 from typing import Dict, List, Union
@@ -10,11 +13,11 @@ class ForexScraper:
 
     def __init__(self) -> None:
         self.time = time.localtime()
-        # Creates an attribute all of the function can use
+        # Creates an instance of a chrome driver all of the function can use
         # Does not need to create an instance for each function
         self.Chrome_Driver = webdriver.Chrome()
 
-        # Aggregates the dataframes
+        # Collects the dataframes for each bank
         # Dictionary of {bank name : table data} pairs
         self.bank_tables_dataframe : Dict [str, pd.DataFrame] = {}
 
@@ -23,6 +26,10 @@ class ForexScraper:
         # Union allows for hinting that a value can be of either type
         # Kind of like set notation, or 'OR' logic
         self.black_market_data : Dict[str , Union [str, float]] = {}
+
+        # merged dataframe with suffxes for every bank
+        # Merging on Currency so needs that label initialization
+        self.merged_data_frame : pd.DataFrame = pd.DataFrame(columns= ['Currency'])
 
     
     def Awash (self, URL: str) -> None:
@@ -85,10 +92,22 @@ class ForexScraper:
     def CBE (self, URL: str) -> None:
         self.Chrome_Driver.get(URL)
 
-        time.sleep(5)
+        time.sleep(10)
 
-        table = self.Chrome_Driver.find_element(By.TAG_NAME, 'table')
+        # Does not make sure if the table is loaded and has text
+        # table = self.Chrome_Driver.find_element(By.TAG_NAME, 'table')
+        # CEB site take long to load so making sure the data is there before extracting
+        try:
+            '''
+            WebDriverWait() takes in the driver instance, and wait time before timeput
+            until() calls the function provided, webdriverwait, as long as EC is true
+            presence checks if the element is present in the DOM
+            '''
+            table = WebDriverWait(self.Chrome_Driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'table')))
 
+        except:
+            print('table not found for CBE site')
+        
         # Data rows
         table_body = table.find_element(By.TAG_NAME, 'tbody')
 
@@ -99,7 +118,7 @@ class ForexScraper:
 
         rows_text = []
         for row in tr_in_body:
-            rows_text.append(row.text)
+            rows_text.append(row.get_attribute('innerText'))
 
         all_rows_text = []
         for text in rows_text:
@@ -109,6 +128,8 @@ class ForexScraper:
         df = pd.DataFrame(all_rows_text, columns= attributes)
 
         # print(df)
+        # Drop currency name because it is not necessary
+        df = df.drop(columns= ['Currency Name'])
 
         time.sleep(3)
         #self.Chrome_Driver.quit()
@@ -277,8 +298,13 @@ class ForexScraper:
         merge_df = merge_df[['Currency Code', 'Currency Name', 'Cash Buying', 'Cash Selling', 'Transaction Buying', 'Transaction Selling']]
 
         # Renaming to make consistent with other banks
+        # Key is the old name
+        # Values is the new name
         merge_df = merge_df.rename(columns={'Currency Code': 'Currency', 'Transaction Buying' : 'Transactional Buying', 'Transaction Selling' : 'Transactional Selling'})
 
+        # Drop Currency Name column
+        # Had issue when merging every bank's table
+        merge_df = merge_df.drop(columns=['Currency Name'])
         #self.Chrome_Driver.quit()
         self.bank_tables_dataframe['Dashen'] = merge_df 
 
@@ -399,6 +425,9 @@ class ForexScraper:
         # Drop the first row beacause it is the same as the header row
         df = df.drop(labels=0, axis = 0)
 
+        # drop Country column
+        # Dropping becuase it is not necessary
+        df = df.drop(columns=['Country'])
         # print(table_data,'\n',df)
         self.bank_tables_dataframe['NIB International'] = df    
 
@@ -407,7 +436,7 @@ class ForexScraper:
         self.Chrome_Driver.get(URL)
 
         # Wait for page to load
-        time.sleep(5)
+        time.sleep(10)
 
         table_element = self.Chrome_Driver.find_element(By.TAG_NAME, 'table')
 
@@ -483,8 +512,36 @@ class ForexScraper:
         # Takes in a a dictionary of key-value pairs and adds them to existing dict
         self.black_market_data.update({'Date': date , 'Time': time})
 
+    # Merges on Currency* and is an outer join
+    # There are disticnt columns for each dataframe
+    # Uses tables_dataframe from scrape instance
+    def merge_dataframes (self) -> None:
 
+        bank_tables = self.bank_tables_dataframe
+        # Create list of banks names and dataframes
+        bank_names = list(bank_tables.keys())
+        data_frames = list(bank_tables.values())
 
+        # rename each column of the dataframe, except currency, to column name + bank name
+        # This is for merging purposes
+        # The merged table will have distince column names
+
+        # Enumrate each dataframe
+        # Use sequence numver to access banks names 
+        for count, frame in enumerate(data_frames):
+            
+            # Rename each column of current frame to have bank name addes except for the currency column
+            # Essentially suffixing before merging
+            # Preserve currency becuase merge key is going to be 'Currency'
+            # lambda used to apply function to each column name
+            frame = frame.rename(columns = lambda x : x + '_' + bank_names[count] if x != 'Currency' else x)
+
+            # print(f'frame after rename')
+            # print(frame)
+            # Merge currenct frame to aggregate frame on 'Currency'
+            self.merged_data_frame = pd.merge(self.merged_data_frame, frame, on = 'Currency', how = 'outer')    
+
+    
 
 
 
