@@ -58,9 +58,9 @@ def get_forex_data(URL: str) -> pandas.DataFrame:
     # time.sleep(3)
     Chrome_Driver.quit()
     return df
-    # df.to_csv(path_or_buf= r'C:\Users\Neamen\Desktop\CBE_Forex_08_08_2024.csv', index= False)
+    #
 
-print(get_forex_data("https://www.combanketh.et/en/exchange-rate/"))
+# print(get_forex_data("https://www.combanketh.et/en/exchange-rate/"))
 
 
 # columns = soup.find_all('th')

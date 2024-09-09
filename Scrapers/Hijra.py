@@ -18,7 +18,7 @@ def get_forex_data(URL: str) -> pd.DataFrame:
 
     # Uses Xpath
     # All tables with given attribute
-    # There are several tables on the webpage
+    # There is only one table on this page
     table_element = Chrome_Driver.find_element(By.TAG_NAME, 'table')
 
     # header part has two rows
@@ -58,15 +58,16 @@ def get_forex_data(URL: str) -> pd.DataFrame:
     # Curreny column has added bits to Currency code. 
     # Needs to be cleaned
 
+    # Currency code has to be fixed
     # For each cell  in column currency, split string on '' and keep on the first part
-    df['Currency'] = df['Currency'].str.split().str[0]
+    # df['Currency'] = df['Currency'].str.split().str[0]
     #print(df)
 
     Chrome_Driver.quit()
     
     return df
 
-print(get_forex_data('https://hijra-bank.com/'))
+# print(get_forex_data('https://hijra-bank.com/'))
 
     
 

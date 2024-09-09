@@ -1,0 +1,42 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+table, th, td {
+    border: 3px solid rgb(165, 146, 5);
+    font-weight: bold;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+h1 {
+    text-align: center;
+}
+p {
+    color: rgb(6, 0, 0);
+    font-weight: bold;
+    margin-bottom: 20px; 
+}
+/*
+Styles the lists 
+Specifically the list with this class attribute
+*/
+ul.horizontal-list li{
+    display: inline;
+    margin-right: 20px;
+}
+
+hr {
+    width: 100%;
+    height: 4px;
+    background-color: gold;
+}
+
+.about_website_container img {
+    width: 200px;
+    height: auto;
+    /* margin-right: 20px;*/
+    margin-left: 60%; 
+}

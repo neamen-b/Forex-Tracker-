@@ -3,6 +3,7 @@ from Scraper import ForexScraper
 from Analyses import Analyze
 from typing import Dict, Optional, Union
 import pandas as pd
+from datetime import date, time, datetime
 
 class Storer:
 
@@ -34,29 +35,36 @@ class Storer:
         # temp_filtered = self.analyze.filtered_df.astype(str)
 
         # Horridly inefficient with conveting values to strings in the df so that it gets null for json
-        all_data['Filtered'] = {name : data_frame.copy().astype(str).where(pd.notnull(data_frame), None).to_dict() for name, data_frame in self.analyze.filtered_df.items()}
+        all_data['Filtered'] = {name : data_frame.copy().astype(str).where(pd.notnull(data_frame), None).to_dict(orient='records') for name, data_frame in self.analyze.filtered_df.items()}
         # map(function = lambda x : x.copy().to_dict(), iter = list(self.analyze.filtered_df.values()))
 
         # Horridly inefficient with conveting values to strings in the df so that it gets null for json
         # Dictionary of data_name to Dictionary of transaction type to Dictionary form of stattisctics dataframe
-        all_data['Stats'] = {name : data_frame.copy().astype(str).where(pd.notnull(data_frame), None).to_dict() for name , data_frame in self.analyze.statistics_df.items()}
+        all_data['Stats'] = {name : data_frame.copy().astype(str).where(pd.notnull(data_frame), None).to_dict(orient='records') for name , data_frame in self.analyze.statistics_df.items()}
 
         # Dictionary of data_name to Dictionary of bank anme to Dictionary form of tables dataframe
         # The NaN replacement workhere for Rates and Aggregate because they don't have float values
-        all_data['Rates'] = {name : data_frame.copy().where(pd.notnull(data_frame), None).to_dict() for name , data_frame in self.scrape.bank_tables_dataframe.items()}
+        all_data['Rates'] = {name : data_frame.copy().where(pd.notnull(data_frame), None).to_dict(orient= 'records') for name , data_frame in self.scrape.bank_tables_dataframe.items()}
 
         # Dcitionary of data_name to merged dataframe in Dictionary form
-        all_data['Aggregate'] = self.scrape.merged_data_frame.copy().where(pd.notnull(self.scrape.merged_data_frame), None).to_dict()
+        all_data['Aggregate'] = self.scrape.merged_data_frame.copy().where(pd.notnull(self.scrape.merged_data_frame), None).to_dict(orient='records')
 
         # Dictionary of a dictionary with black data
         all_data['Black'] = self.scrape.black_market_data
 
-        myfile = open(r'C:\Users\Neamen\Documents\GitHub\Forex-Tracker-\all_data.json', 'w')
+        # Gets the current date to name the file with and add to all_data
+        current_date = str(date.today())
+
+        # Current time to add to all_data
+        current_time = str(datetime.now().time())
+
+        all_data['DateTime'] = {'Date' : current_date , 'Time' : current_time}
+
+        myfile = open(fr'C:\Users\Neamen\Documents\GitHub\Forex-Tracker-\{current_date}.json', 'w')
         json.dump(all_data, myfile)
 
         myfile.close()
 
-        # return all_data
 
 
 

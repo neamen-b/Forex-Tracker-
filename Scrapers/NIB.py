@@ -52,15 +52,19 @@ def get_forex_data (URL: str) -> pd.DataFrame:
             # Extract text and add to row data
             # Check if it has text, is so add. Because the first columns in tr are images
             # if data.get_attribute('textContent'):
-                row_data.append(data.get_attribute('textContent').strip())
+            row_data.append(data.get_attribute('textContent').strip())
         
         # Add to table data which is a 2D list
         table_data.append(row_data)
     
+    # Create DataFrame with 2D array and set columns to first element
     df = pd.DataFrame(table_data, columns= table_data[0])
+
+    # Drop the first row beacause it is the same as the header row
     df = df.drop(labels=0, axis = 0)
-    print(table_data,'\n',df)
 
+    # print(table_data,'\n',df)
+    return df
 
-get_forex_data('https://www.nibbanksc.com/exchange-rate/')
+# get_forex_data('https://www.nibbanksc.com/exchange-rate/')
          

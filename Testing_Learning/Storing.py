@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import numpy as np
+from datetime import date, datetime
 
 df1 = pd.DataFrame({
     'A' : [1,2,3,np.nan,5],
@@ -29,7 +30,14 @@ print("Dataframe:", dict_of_dfs)
 print("Dictionary:", dict_of_dfs_2)
 
 
-myfile = open(fr'C:\Users\Neamen\Documents\GitHub\Forex-Tracker-\Testing_Learning\testing_df1.json', 'w')
+
+file_name = str(date.today())
+current_time = str(datetime.now().time())
+print(file_name)
+print(current_time)
+
+
+myfile = open(fr'C:\Users\Neamen\Documents\GitHub\Forex-Tracker-\Testing_Learning\{file_name}.json', 'w')
 
 json.dump(dict_of_dfs_2['df1'], myfile)
 # Filename and path of storage

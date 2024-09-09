@@ -47,7 +47,6 @@ class Analyze:
             # 'f' is used to embed the variable regex string
             # Currency label will not be included in this df
             filtered_data_frame = pd.DataFrame(merged_data_frame.filter(regex= fr'{column_head}'))
-
             # troubshooting data type issue
             # print("Filtered data frame before the column 'Currency' has been added")
             # print(f"tran type {column_head}")
@@ -96,17 +95,19 @@ class Analyze:
             filtered_data_frame = filtered_data_frame.rename(columns = lambda x : ''.join(re.findall(pattern= r'_(.*)', string= x)))
             # print(F"iloc -> \n {filtered_data_frame.columns}")
 
-        # Bring back currency label
-        # This is used to insert at a specific index
-        # loc takes an index 0...n
-        # column takes label name
-        # value takes series
-        # Insert is in place, returns None
-        filtered_data_frame.insert(loc= 0, column='Currency', value= merged_data_frame['Currency'])
-        # print(f"filtered dataframe after inserting currency at {column_head}")
-        # print(filtered_data_frame.head())
-        # Push to dictionary of filtered df for each transaction type 
-        self.filtered_df[column_head] = filtered_data_frame
+            # Bring back currency label
+            # This is used to insert at a specific index
+            # loc takes an index 0...n
+            # column takes label name
+            # value takes series
+            # Insert is in place, returns None
+            filtered_data_frame.insert(loc= 0, column='Currency', value= merged_data_frame['Currency'])
+            # print(f'Filtered dataframe @ {filtered_data_frame}')
+            # print(filtered_data_frame)
+            # print(f"filtered dataframe after inserting currency at {column_head}")
+            # print(filtered_data_frame.head())
+            # Push to dictionary of filtered df for each transaction type 
+            self.filtered_df[column_head] = filtered_data_frame
 
         
 

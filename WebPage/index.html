@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForexEthiopia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h1>Ethiopian Bank Forex Data Tables</h1>
+
+    <div class="about_website_container">
+        <p>
+            This website has tables of:
+        <ul>
+            <li>The black market rate for USD as of the date specified</li>
+            <li>Highest rates, lowest rates and other stats for currencies traded across 7 national banks</li>
+            <li>The exchange rates for currencies across 7 national banks</li>
+            <li>The currencies filtered by transaction type across 7 national banks</li>
+            <li>Aggregate of all the currencies and banks</li>
+        </ul>
+        </p>
+
+        <img src="Flag_of_Ethiopia.svg.png">
+    </div>
+
+    <hr>
+    <p>
+        This information is obtained from official bank websites and is updated <u>daily</u>. Official websites:
+        <!-- Giving it class here so that I can change the way it is displayed-->
+    <ul class="horizontal-list">
+        <li> <a href="https://awashbank.com/exchange-historical/" target="_blank"> Awash Bank </a></li>
+        <li> <a href="https://www.combanketh.et/en/exchange-rate/" target="_blank"> CBE </a></li>
+        <li> <a href="https://coopbankoromia.com.et/daily-exchange-rates/" target="_blank"> COOP </a></li>
+        <li> <a href="https://dashenbanksc.com/daily-exchange-rates-2/" target="_blank"> Dashen Bank</a></li>
+        <li> <a href="https://hijra-bank.com/" target="_blank"> Hijra Bank</a></li>
+        <li> <a href="https://www.nibbanksc.com/exchange-rate/" target="_blank"> NIB International Bank</a></li>
+        <li> <a href="https://wegagen.com/" target="_blank"> Wegagen Bank</a></li>
+
+    </ul>
+    </p>
+    <hr>
+    <p>
+        This data is from the perspective of the bank. For example, Cash Buying means the price at which the bank buys
+        that currency. Therefore,
+        if you are selling $1 in Cash, you would go to the bank with the highest Cash Buying Rate and avoid the bank
+        with the lowest rate.
+    </p>
+    <hr>
+    <p>
+        Here lies a lucrative opportunity in <u>arbitrage</u> -- A difference in price for the same product.
+        <a href="https://www.investopedia.com/terms/forex/f/forex-arbritrage.asp#:~:text=Forex%20arbitrage%20is%20the%20strategy,extremely%20likely%20to%20rapidly%20converge."
+            target="_blank">
+            Why arbitrage?
+        </a>
+    </p>
+    <p>
+        Key takeaway: You, me, we, can help the "new" market become more efficient by capitilizing on this opportunity
+        and make some money along the way for our good deeds.
+        <u>Provided the market exists.</u>
+    </p>
+    <hr>
+
+    <!-- This will be referenced by the script-->
+    <div id="tables"></div>
+
+    <!-- Link the external JavaScript file -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>

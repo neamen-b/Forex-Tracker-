@@ -137,6 +137,6 @@ def get_table_data (URL :str) -> pd.DataFrame:
     # print("df1",df)
     # print("df2", df2)
         
-print(get_table_data("https://dashenbanksc.com/daily-exchange-rates-2/"))
+# print(get_table_data("https://dashenbanksc.com/daily-exchange-rates-2/"))
 
 

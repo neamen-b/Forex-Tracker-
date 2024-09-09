@@ -44,7 +44,7 @@ def get_forex_data(URL: str) -> pd.DataFrame:
         # Add row data to table data
         table_data.append(row_data)
 
-    print(table_data)
+    # print(table_data)
     # Create dataframe wtih 2D list
     
     # Initialize list for use as columns in Dataframe
@@ -53,14 +53,15 @@ def get_forex_data(URL: str) -> pd.DataFrame:
 
     df = pd.DataFrame(table_data, columns= columns)
 
-    # I do not need image and nuit column
+    # I do not need image and unit column
+    # Drop by column name
     df = df.drop(columns= ['Image', 'Unit'])
 
     Chrome_Driver.quit()
-    print(df)
+    # print(df)
     return df
 
-get_forex_data('https://wegagen.com/')
+# get_forex_data('https://wegagen.com/')
 
     
 

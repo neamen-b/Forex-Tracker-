@@ -65,7 +65,7 @@ def get_forex_data(URL: str) -> Dict [str, pd.DataFrame]:
 
     Chrome_Driver.quit()
 
-    return {'Awash' : df}
+    return {'Awash Bank' : df}
 
 print(get_forex_data('https://awashbank.com/exchange-historical/'))
 

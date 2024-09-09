@@ -66,7 +66,7 @@ def get_forex_data(URL: str) -> pd.DataFrame:
     
     return df
 
-print(get_forex_data('https://coopbankoromia.com.et/daily-exchange-rates/'))
+# get_forex_data('https://coopbankoromia.com.et/daily-exchange-rates/')
 
     
 
