@@ -1,5 +1,36 @@
+/**
+ * @param {}
+ * @return {string}
+ * 
+ */
+let DateAsString = function(){
+    let currenct_date = new Date();
+    let date_components = [];
+
+    let year = currenct_date.getFullYear();
+    // Month is zero indexed, runs 0-11
+    let month = currenct_date.getMonth() + 1;
+    // Day is 1 indexded, runs 1-31
+    let day = currenct_date.getDate();
+
+    // Adding components to the array as strings padded if needed
+    date_components.push(year.toString());
+    // padstart() pads the string with a given string to reach the given length. so if 1, pad with 0 to make 01.
+    date_components.push(month < 10 ? month.toString().padStart(2,'0') : month.toString());
+    date_components.push(day < 10 ? day.toString().padStart(2, '0') : day.toString());
+
+
+    // Needs relative path so adding that
+    const path = require('path');
+    file_path = path.join(__dirname, date_components.join('-'));
+    return `${file_path}.json`;
+
+}
+
+
+
 // Fetch JSON data and display it in tables
-fetch('2024-09-09.json')
+fetch(DateAsString())
     .then(response => response.json())
     .then(data => {
         const container = document.getElementById('tables');
