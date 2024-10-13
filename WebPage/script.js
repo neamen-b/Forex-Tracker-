@@ -23,11 +23,9 @@ let DateAsString = function(){
     // Needs relative path so adding that
     const path = require('path');
     file_path = path.join(__dirname, date_components.join('-'));
-    return `${file_path}.json`;
+    return `${date_components.join('-')}.json`;
 
 }
-
-
 
 // Fetch JSON data and display it in tables
 fetch(DateAsString())
