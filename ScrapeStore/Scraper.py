@@ -5,14 +5,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 # has difference expected values parameters
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
-import time
+import time as tm
 from typing import Dict, List, Union
 
 
 class ForexScraper:
 
     def __init__(self) -> None:
-        self.time = time.localtime()
+        self.time = tm.localtime()
         # Creates an instance of a chrome driver all of the function can use
         # Does not need to create an instance for each function
         self.Chrome_Driver = webdriver.Chrome()
@@ -37,7 +37,7 @@ class ForexScraper:
         self.Chrome_Driver.get(URL)
 
         # Wait for page to load
-        time.sleep(5)
+        tm.sleep(5)
 
         # Uses Xpath
         # All tables with given attribute
@@ -84,7 +84,7 @@ class ForexScraper:
         # For each cell  in column currency, split string on '' and keep on the first part
         df['Currency'] = df['Currency'].str.split().str[0]
         #print(df)
-        time.sleep(3)
+        tm.sleep(3)
         #self.Chrome_Driver.quit()
 
         self.bank_tables_dataframe['Awash'] = df
@@ -92,7 +92,7 @@ class ForexScraper:
     def CBE (self, URL: str) -> None:
         self.Chrome_Driver.get(URL)
 
-        time.sleep(10)
+        tm.sleep(10)
 
         # Does not make sure if the table is loaded and has text
         # table = self.Chrome_Driver.find_element(By.TAG_NAME, 'table')
@@ -131,7 +131,7 @@ class ForexScraper:
         # Drop currency name because it is not necessary
         df = df.drop(columns= ['Currency Name'])
 
-        time.sleep(3)
+        tm.sleep(3)
         #self.Chrome_Driver.quit()
         self.bank_tables_dataframe['CBE'] = df
     
@@ -141,7 +141,7 @@ class ForexScraper:
         self.Chrome_Driver.get(URL)
 
         # Wait for page to load
-        time.sleep(5)
+        tm.sleep(5)
 
         # Uses Xpath
         # All tables with given attribute
@@ -198,7 +198,7 @@ class ForexScraper:
         self.Chrome_Driver.get(URL)
 
         # Sleep to make sure website fully loads
-        time.sleep(5)
+        tm.sleep(5)
 
         # CASH
         # Locate webelement 'table' by tag name
@@ -238,7 +238,7 @@ class ForexScraper:
         transaction_link.click()
 
         # Make sure webpage loads fully
-        time.sleep(5)
+        tm.sleep(5)
 
         # Exctract data from this table
         # It did not work with Tag name for some reason
@@ -313,7 +313,7 @@ class ForexScraper:
         self.Chrome_Driver.get(URL)
 
         # Wait for page to load
-        time.sleep(5)
+        tm.sleep(5)
 
         # Uses Xpath
         # All tables with given attribute
@@ -354,6 +354,8 @@ class ForexScraper:
 
         df = pd.DataFrame(table_data, columns= columns)
 
+        # print("Currency column")
+        # print(df.Currency)
         # Currency names need to be converted to ISOs
         # Updates columns values to ISOs
         df['Currency'] = ['USD', 'EUR', 'GBP', 'SAR', 'AED']
@@ -373,7 +375,7 @@ class ForexScraper:
     def NIB (self, URL : str) -> None:
         self.Chrome_Driver.get(URL)
 
-        time.sleep(5)
+        tm.sleep(5)
 
         # This webpage has two tables
         table_elements = self.Chrome_Driver.find_elements(By.TAG_NAME, 'table')
@@ -436,7 +438,7 @@ class ForexScraper:
         self.Chrome_Driver.get(URL)
 
         # Wait for page to load
-        time.sleep(10)
+        tm.sleep(10)
 
         table_element = self.Chrome_Driver.find_element(By.TAG_NAME, 'table')
 
@@ -487,6 +489,7 @@ class ForexScraper:
         # Connect to website
         self.Chrome_Driver.get(URL)
 
+        tm.sleep(4)
         # Locate title element by ID
         title = self.Chrome_Driver.find_element(By.ID, 'title')
         # Store text as currency
@@ -494,10 +497,10 @@ class ForexScraper:
 
         # Locate the exchange rate element by ID
         exchange_rate = self.Chrome_Driver.find_element(By.ID, 'livePrice')
-
         # Store rate as float  in dictionary
         # 118.4342 Br
         # Deals with 'Br' by splitting 
+        # print(exchange_rate.get_attribute('innerText').split()[0])
         self.black_market_data['Rate'] = float(exchange_rate.get_attribute('innerText').split()[0])
 
 
